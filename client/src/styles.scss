@@ -35,6 +35,13 @@ body,
   width: 300px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
+  .addBtn {
+    float: right;
+    margin-right: 40px;
+    cursor: pointer;
+    color: #6093ca;
+  }
+
   ul {
     list-style: none;
     text-align: start;
