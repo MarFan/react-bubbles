@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -7,8 +8,8 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
   const [editing, setEditing] = useState(false);
+  const [adding, setAdding] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
   const editColor = color => {
@@ -21,10 +22,24 @@ const ColorList = ({ colors, updateColors }) => {
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    axiosWithAuth().put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => {
+        updateColors(colors.map(color => {
+          if(color.id === colorToEdit.id){
+            return {
+              ...colorToEdit
+            }
+          }else{
+            return color
+          }
+        }))
+      })
+      .catch(err => err.response)
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    updateColors(colors.filter(({ id }) => id !== color.id))
   };
 
   return (
@@ -82,6 +97,9 @@ const ColorList = ({ colors, updateColors }) => {
       )}
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
+      {adding && (
+        <form onSubmit=""></form>
+      )}
     </div>
   );
 };
